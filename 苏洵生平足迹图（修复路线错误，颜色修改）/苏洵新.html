@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>苏洵</title>
+    <script src="echarts.js"></script>
+    <script src="LiaoBeisongLu.js"></script>	
+</head>
+<body>
+<div id = "main" style="height:600px;width:1000px;"></div>
+<script type="text/javascript">
+
+   
+
+	var chart = echarts.init(document.getElementById('main'));
+	var geoCoordMap = {
+        '蜀':[103.83,30.5],
+    '成都':[104.078,30.65038],
+    '开封':[114.34333,34.785477],
+    '长安':[108.906976,34.246423],
+    '庐山':[116.26,29.42],
+    '虔州':[114.93248,25.847],
+    '蜀':[103.83,30.5],
+    '成都':[104.078,30.65038],
+    '雅州':[102.98437,29.98556],
+    '成都':[104.078,30.65038],
+    '阆中':[105.96703,31.58316],
+    '长安':[108.906976,34.246423],
+    '渑池':[111.76631,34.7652],
+    '开封':[114.34333,34.785477],
+    '蜀':[103.83,30.5],
+    '江陵':[112.19077,30.35044],
+    '京':[114.34333,34.785477],
+    '杞县':[114.77448,34.55351],
+    '霸州文安县':[116.39524841,39.101539612],
+    '京':[114.34333,34.785477],
+    '京':[114.34333,34.785477]
+		
+		};
+	var data = [
+     //{name: '海门', value: 9},
+	  [{name:'蜀'},{name:'成都',value:1}],
+    [{name:'成都'},{name:'开封',value:1}],
+    [{name:'开封'},{name:'长安',value:1}],
+    [{name:'长安'},{name:'庐山',value:1}],
+    [{name:'庐山'},{name:'虔州',value:1}],
+    [{name:'虔州'},{name:'蜀',value:1}],
+    [{name:'蜀'},{name:'成都',value:1}],
+    [{name:'成都'},{name:'雅州',value:1}],
+    [{name:'雅州'},{name:'成都',value:1}],
+    [{name:'成都'},{name:'阆中',value:1}],
+    [{name:'阆中'},{name:'长安',value:1}],
+    [{name:'长安'},{name:'渑池',value:1}],
+    [{name:'渑池'},{name:'开封',value:1}],
+    [{name:'开封'},{name:'蜀',value:1}],
+    [{name:'蜀'},{name:'江陵',value:1}],
+    [{name:'江陵'},{name:'京',value:1}],
+    [{name:'京'},{name:'杞县',value:1}],
+    [{name:'杞县'},{name:'霸州文安县',value:1}],
+    [{name:'霸州文安县'},{name:'京',value:1}],
+    [{name:'京'},{name:'京',value:1}]
+	 ];
+	 //矢量图，这里是飞机，如果想小汽车，就是carPath的矢量图
+	 var planePath = 'path://M1705.06,1318.313v-89.254l-319.9-221.799l0.073-208.063c0.521-84.662-26.629-121.796-63.961-121.491c-37.332-0.305-64.482,36.829-63.961,121.491l0.073,208.063l-319.9,221.799v89.254l330.343-157.288l12.238,241.308l-134.449,92.931l0.531,42.034l175.125-42.917l175.125,42.917l0.531-42.034l-134.449-92.931l12.238-241.308L1705.06,1318.313z';
+	
+	
+	var convertData = function (data) {
+    var res = [];
+    for (var i = 0; i < data.length; i++) {
+        var dataItem = data[i];
+        var fromCoord = geoCoordMap[dataItem[0].name];
+        var toCoord = geoCoordMap[dataItem[1].name];
+        if (fromCoord && toCoord) {
+            res.push({
+                fromName: dataItem[0].name,
+                toName: dataItem[1].name,
+                coords: [fromCoord, toCoord] //注意这个函数
+            });
+        }
+    }
+    return res;
+}; //end convertData
+	
+	chart.setOption({
+		
+		baseOption: {
+		backgroundColor: 'rgb(243,243,243)',//设置显示框的背景颜色
+		timeline: {axisType: 'category',
+          autoPlay: true,
+		   orient: 'horizontal',
+          playInterval: 1000,
+          emphasis:{
+            label:{
+              color:'rgb(48,70,84)',
+              font:'bold'
+            },
+          },
+
+          checkpointStyle:{
+            color:'rgb(48,70,84)',
+            borderColor:'rgb(48,70,84)'
+          },
+
+          data: [
+
+            {
+              value: '1009',//出生
+              symbol: 'pin',
+              symbolSize: 18
+            },
+
+            '1030', '1045', '1045', '1047', '1047', '1047', '1055', '1055', '1056', '1056', '1056', '1056', '1056', '1057', '1059', '1060', '1060', '1061', '1062',
+
+            {
+              value:  '1064',//去世
+              symbol: 'pin',
+              symbolSize: 18
+            }
+
+          ],},
+		  title: {
+          text: '苏洵生平足迹地图',
+          subtext: '制图：谢珊',
+          sublink: '',
+          x:'center',
+          textStyle: {
+            color: '#000',
+            font:'bold',
+          }
+        },
+		
+			tooltip:{
+			trigger: 'item',
+			formatter: function (params) {
+            return params.name + ' : ' + params.value[2];
+          }
+		},
+		legend:{  //表示图例列表
+               //orient: 'horizontal',
+          y: 'bottom',
+          x:'right',
+          data:[ ],
+          textStyle: {
+            color: '#000'
+          }
+            },
+            //xAxis:{data:["Android","IOS","PC","Ohter"]//show:false,snap:true,}, //显示X轴
+            //yAxis:{show:false,snap:true,}, //Y轴
+		
+			geo:{
+			//type : 'lines',
+			map: 'LiaoBeisongLu',  // 加入geo 这个属性，会显示另一张地图
+			
+			roam: true,  // 是否支持缩放和拖动
+			zlevel: 0, //用于图像分层，大值会覆盖小值 默认为0
+			itemStyle: {  //地图颜色
+            normal: {
+              areaColor: '#323c48',
+              borderColor: '#111'
+            },
+            emphasis: {
+              areaColor: '#F9F9F9',
+              label:{ show:true,}
+            }
+          },
+			
+			
+			},
+			
+			
+			
+		series: [
+		
+		
+			{
+				//name: item[0] + ' 路线',
+				type: 'lines',
+				coordinateSystem:'geo',
+				zlevel: 2,
+				//symbol: ['none', 'arrow'],
+				
+				symbolSize: 10,
+				effect: {
+					show: false, //是否显示特效
+					period: 6,
+					trailLength: 0,
+					symbol: 'arrow', //飞行形状
+					loop:false, //是否循环特效
+					symbolSize: 10
+				},
+				lineStyle: {
+					normal: {
+						color: '#2ec7c9',
+						width: 2,
+						opacity: 0.6,
+						curveness: 0.2
+					}
+				},
+				
+				
+			//data: convertData(data),
+			
+			},
+			
+			
+		
+		{
+			type: 'scatter',
+            coordinateSystem: 'geo', //该系列使用的坐标系, geo 表示 使用地理坐标系，通过 geoIndex 指定相应的地理坐标系组件。
+			//zlevel: 3,
+			show:true,
+			
+			rippleEffect: {  //涟漪特效相关配置
+				brushType: 'stroke'  //波纹的绘制方式
+			},
+			itemStyle: {
+				normal: {
+					//color: "#2ec7c9",
+					lineStyle: {
+						color: "#2ec7c9"
+					}
+				}
+			},
+			 label: {  //加上会显示城市名
+            normal: { 
+                show: true,
+                position: 'right',
+                formatter: '{b}'
+				}
+			},
+			
+			//data: convertData([{name:'三亚'}, {name:'海门',value:95}]),
+          // data: convertData(data),
+		  //显示城市坐标点的方法
+		   data: data.map(function (data2) {  //BJData
+                            return {
+                                name: data2[1].name,  //  真州   [{name:'真州'},{name:'常州',value:1}]
+                                value: geoCoordMap[data2[1].name].concat([data2[1].value]) // 常州  1
+                            };
+                        })
+		 
+						
+						
+						
+						
+						
+			//data:[['海门',121.15,31.89],['三亚',109.511909,18.252847]]  //不知道怎么写
+		},
+		
+		//{type: 'map', map: 'LiaoBeisongLu'},  //这里会显示一张地图的底图
+		
+			
+			//type: 'scatter',
+          //  coordinateSystem: 'geo',
+           // data: convertData(data),
+		   
+		]
+		},
+		
+		 options: [
+		  { // 这是'1030' 	' 对应的 option
+			  series: [
+			  {data: convertData([
+     
+				[{name:'蜀'}, {name:'成都',value:95}],
+	
+			]),},
+	 
+			
+			  ]
+		  },
+		  { // 这是'1045'	' 对应的 option
+			  series: [
+			   {data: convertData([
+				 [{name:'蜀'}, {name:'成都',value:95}],
+				 [{name:'成都'}, {name:'开封',value:95}],
+				]),},
+			   
+			  ]
+          },
+		  { // 这是'1047	' 对应的 option
+			  series: [
+			   {data: convertData([
+     
+				 [{name:'蜀'}, {name:'成都',value:95}],
+				 [{name:'成都'}, {name:'开封',value:95}],
+				 [{name:'开封'}, {name:'长安',value:95}],
+				]),},
+			  
+			  ]
+          },
+		  { // 这是'1047	' 对应的 option
+			  series: [
+			   {data: convertData([
+     
+				 [{name:'蜀'}, {name:'成都',value:95}],
+				 [{name:'成都'}, {name:'开封',value:95}],
+				 [{name:'开封'}, {name:'长安',value:95}],
+				 [{name:'长安'}, {name:'庐山',value:95}],
+				]),},
+			  
+			  ]
+          },
+		  { // 这是'1047	' 对应的 option
+			  series: [
+			   {data: convertData([
+     
+				 [{name:'蜀'}, {name:'成都',value:95}],
+				 [{name:'成都'}, {name:'开封',value:95}],
+				 [{name:'开封'}, {name:'长安',value:95}],
+				 [{name:'长安'}, {name:'庐山',value:95}],
+				 [{name:'庐山'}, {name:'虔州',value:95}],
+				]),},
+			  
+			  ]
+          },
+		 { // 这是'1047	' 对应的 option
+			  series: [
+			   {data: convertData([
+     
+				 [{name:'蜀'}, {name:'成都',value:95}],
+				 [{name:'成都'}, {name:'开封',value:95}],
+				 [{name:'开封'}, {name:'长安',value:95}],
+				 [{name:'长安'}, {name:'庐山',value:95}],
+				 [{name:'庐山'}, {name:'虔州',value:95}],
+				 [{name:'庐山'}, {name:'蜀',value:95}],
+				]),},
+			  
+			  ]
+          },
+		  { // 这是'1047	' 对应的 option
+			  series: [
+			   {data: convertData([
+     
+				 [{name:'蜀'}, {name:'成都',value:95}],
+				 [{name:'成都'}, {name:'开封',value:95}],
+				 [{name:'开封'}, {name:'长安',value:95}],
+				 [{name:'长安'}, {name:'庐山',value:95}],
+				 [{name:'庐山'}, {name:'虔州',value:95}],
+				 [{name:'庐山'}, {name:'蜀',value:95}],
+				 [{name:'蜀'}, {name:'成都',value:95}],
+				]),},
+			  
+			  ]
+          },
+		  { // 这是'1047	' 对应的 option
+			  series: [
+			   {data: convertData([
+     
+				 [{name:'蜀'}, {name:'成都',value:95}],
+				 [{name:'成都'}, {name:'开封',value:95}],
+				 [{name:'开封'}, {name:'长安',value:95}],
+				 [{name:'长安'}, {name:'庐山',value:95}],
+				 [{name:'庐山'}, {name:'虔州',value:95}],
+				 [{name:'庐山'}, {name:'蜀',value:95}],
+				 [{name:'蜀'}, {name:'成都',value:95}],
+				 [{name:'成都'}, {name:'雅州',value:95}],
+				]),},
+			  
+			  ]
+          },
+		  { // 这是'1047	' 对应的 option
+			  series: [
+			   {data: convertData([
+     
+				 [{name:'蜀'}, {name:'成都',value:95}],
+				 [{name:'成都'}, {name:'开封',value:95}],
+				 [{name:'开封'}, {name:'长安',value:95}],
+				 [{name:'长安'}, {name:'庐山',value:95}],
+				 [{name:'庐山'}, {name:'虔州',value:95}],
+				 [{name:'庐山'}, {name:'蜀',value:95}],
+				 [{name:'蜀'}, {name:'成都',value:95}],
+				 [{name:'成都'}, {name:'雅州',value:95}],
+				 [{name:'雅州'}, {name:'成都',value:95}],
+				]),},
+			  
+			  ]
+          },
+		   { // 这是'1047	' 对应的 option
+			  series: [
+			   {data: convertData([
+     
+				 [{name:'蜀'}, {name:'成都',value:95}],
+				 [{name:'成都'}, {name:'开封',value:95}],
+				 [{name:'开封'}, {name:'长安',value:95}],
+				 [{name:'长安'}, {name:'庐山',value:95}],
+				 [{name:'庐山'}, {name:'虔州',value:95}],
+				 [{name:'庐山'}, {name:'蜀',value:95}],
+				 [{name:'蜀'}, {name:'成都',value:95}],
+				 [{name:'成都'}, {name:'雅州',value:95}],
+				 [{name:'雅州'}, {name:'成都',value:95}],
+				 [{name:'成都'}, {name:'阆中',value:95}],
+				]),},
+			  
+			  ]
+          },
+		  { // 这是'1047	' 对应的 option
+			  series: [
+			   {data: convertData([
+     
+				 [{name:'蜀'}, {name:'成都',value:95}],
+				 [{name:'成都'}, {name:'开封',value:95}],
+				 [{name:'开封'}, {name:'长安',value:95}],
+				 [{name:'长安'}, {name:'庐山',value:95}],
+				 [{name:'庐山'}, {name:'虔州',value:95}],
+				 [{name:'庐山'}, {name:'蜀',value:95}],
+				 [{name:'蜀'}, {name:'成都',value:95}],
+				 [{name:'成都'}, {name:'雅州',value:95}],
+				 [{name:'雅州'}, {name:'成都',value:95}],
+				 [{name:'成都'}, {name:'阆中',value:95}],
+				 [{name:'阆中'}, {name:'长安',value:95}],
+				]),},
+			  
+			  ]
+          },
+		  { // 这是'1047	' 对应的 option
+			  series: [
+			   {data: convertData([
+     
+				 [{name:'蜀'}, {name:'成都',value:95}],
+				 [{name:'成都'}, {name:'开封',value:95}],
+				 [{name:'开封'}, {name:'长安',value:95}],
+				 [{name:'长安'}, {name:'庐山',value:95}],
+				 [{name:'庐山'}, {name:'虔州',value:95}],
+				 [{name:'庐山'}, {name:'蜀',value:95}],
+				 [{name:'蜀'}, {name:'成都',value:95}],
+				 [{name:'成都'}, {name:'雅州',value:95}],
+				 [{name:'雅州'}, {name:'成都',value:95}],
+				 [{name:'成都'}, {name:'阆中',value:95}],
+				 [{name:'阆中'}, {name:'长安',value:95}],
+				 [{name:'长安'}, {name:'渑池',value:95}],
+				]),},
+			  
+			  ]
+          },
+		  { // 这是'1047	' 对应的 option
+			  series: [
+			   {data: convertData([
+     
+				 [{name:'蜀'}, {name:'成都',value:95}],
+				 [{name:'成都'}, {name:'开封',value:95}],
+				 [{name:'开封'}, {name:'长安',value:95}],
+				 [{name:'长安'}, {name:'庐山',value:95}],
+				 [{name:'庐山'}, {name:'虔州',value:95}],
+				 [{name:'庐山'}, {name:'蜀',value:95}],
+				 [{name:'蜀'}, {name:'成都',value:95}],
+				 [{name:'成都'}, {name:'雅州',value:95}],
+				 [{name:'雅州'}, {name:'成都',value:95}],
+				 [{name:'成都'}, {name:'阆中',value:95}],
+				 [{name:'阆中'}, {name:'长安',value:95}],
+				 [{name:'长安'}, {name:'渑池',value:95}],
+				 [{name:'渑池'}, {name:'开封',value:95}],
+				]),},
+			  
+			  ]
+          },
+		  { // 这是'1047	' 对应的 option
+			  series: [
+			   {data: convertData([
+     
+				 [{name:'蜀'}, {name:'成都',value:95}],
+				 [{name:'成都'}, {name:'开封',value:95}],
+				 [{name:'开封'}, {name:'长安',value:95}],
+				 [{name:'长安'}, {name:'庐山',value:95}],
+				 [{name:'庐山'}, {name:'虔州',value:95}],
+				 [{name:'庐山'}, {name:'蜀',value:95}],
+				 [{name:'蜀'}, {name:'成都',value:95}],
+				 [{name:'成都'}, {name:'雅州',value:95}],
+				 [{name:'雅州'}, {name:'成都',value:95}],
+				 [{name:'成都'}, {name:'阆中',value:95}],
+				 [{name:'阆中'}, {name:'长安',value:95}],
+				 [{name:'长安'}, {name:'渑池',value:95}],
+				 [{name:'渑池'}, {name:'开封',value:95}],
+				 [{name:'开封'}, {name:'蜀',value:95}],
+				]),},
+			  
+			  ]
+          },
+		  { // 这是'1047	' 对应的 option
+			  series: [
+			   {data: convertData([
+     
+				 [{name:'蜀'}, {name:'成都',value:95}],
+				 [{name:'成都'}, {name:'开封',value:95}],
+				 [{name:'开封'}, {name:'长安',value:95}],
+				 [{name:'长安'}, {name:'庐山',value:95}],
+				 [{name:'庐山'}, {name:'虔州',value:95}],
+				 [{name:'庐山'}, {name:'蜀',value:95}],
+				 [{name:'蜀'}, {name:'成都',value:95}],
+				 [{name:'成都'}, {name:'雅州',value:95}],
+				 [{name:'雅州'}, {name:'成都',value:95}],
+				 [{name:'成都'}, {name:'阆中',value:95}],
+				 [{name:'阆中'}, {name:'长安',value:95}],
+				 [{name:'长安'}, {name:'渑池',value:95}],
+				 [{name:'渑池'}, {name:'开封',value:95}],
+				 [{name:'开封'}, {name:'蜀',value:95}],
+				 [{name:'蜀'}, {name:'江陵',value:95}],
+				]),},
+			  
+			  ]
+          },
+		  { // 这是'1047	' 对应的 option
+			  series: [
+			   {data: convertData([
+     
+				 [{name:'蜀'}, {name:'成都',value:95}],
+				 [{name:'成都'}, {name:'开封',value:95}],
+				 [{name:'开封'}, {name:'长安',value:95}],
+				 [{name:'长安'}, {name:'庐山',value:95}],
+				 [{name:'庐山'}, {name:'虔州',value:95}],
+				 [{name:'庐山'}, {name:'蜀',value:95}],
+				 [{name:'蜀'}, {name:'成都',value:95}],
+				 [{name:'成都'}, {name:'雅州',value:95}],
+				 [{name:'雅州'}, {name:'成都',value:95}],
+				 [{name:'成都'}, {name:'阆中',value:95}],
+				 [{name:'阆中'}, {name:'长安',value:95}],
+				 [{name:'长安'}, {name:'渑池',value:95}],
+				 [{name:'渑池'}, {name:'开封',value:95}],
+				 [{name:'开封'}, {name:'蜀',value:95}],
+				 [{name:'蜀'}, {name:'江陵',value:95}],
+				 [{name:'江陵'}, {name:'京',value:95}],
+				]),},
+			  
+			  ]
+          },
+		  { // 这是'1047	' 对应的 option
+			  series: [
+			   {data: convertData([
+     
+				 [{name:'蜀'}, {name:'成都',value:95}],
+				 [{name:'成都'}, {name:'开封',value:95}],
+				 [{name:'开封'}, {name:'长安',value:95}],
+				 [{name:'长安'}, {name:'庐山',value:95}],
+				 [{name:'庐山'}, {name:'虔州',value:95}],
+				 [{name:'庐山'}, {name:'蜀',value:95}],
+				 [{name:'蜀'}, {name:'成都',value:95}],
+				 [{name:'成都'}, {name:'雅州',value:95}],
+				 [{name:'雅州'}, {name:'成都',value:95}],
+				 [{name:'成都'}, {name:'阆中',value:95}],
+				 [{name:'阆中'}, {name:'长安',value:95}],
+				 [{name:'长安'}, {name:'渑池',value:95}],
+				 [{name:'渑池'}, {name:'开封',value:95}],
+				 [{name:'开封'}, {name:'蜀',value:95}],
+				 [{name:'蜀'}, {name:'江陵',value:95}],
+				 [{name:'江陵'}, {name:'京',value:95}],
+				 [{name:'京'}, {name:'杞县',value:95}],
+				]),},
+			  
+			  ]
+          },
+		   { // 这是'1047	' 对应的 option
+			  series: [
+			   {data: convertData([
+     
+				 [{name:'蜀'}, {name:'成都',value:95}],
+				 [{name:'成都'}, {name:'开封',value:95}],
+				 [{name:'开封'}, {name:'长安',value:95}],
+				 [{name:'长安'}, {name:'庐山',value:95}],
+				 [{name:'庐山'}, {name:'虔州',value:95}],
+				 [{name:'庐山'}, {name:'蜀',value:95}],
+				 [{name:'蜀'}, {name:'成都',value:95}],
+				 [{name:'成都'}, {name:'雅州',value:95}],
+				 [{name:'雅州'}, {name:'成都',value:95}],
+				 [{name:'成都'}, {name:'阆中',value:95}],
+				 [{name:'阆中'}, {name:'长安',value:95}],
+				 [{name:'长安'}, {name:'渑池',value:95}],
+				 [{name:'渑池'}, {name:'开封',value:95}],
+				 [{name:'开封'}, {name:'蜀',value:95}],
+				 [{name:'蜀'}, {name:'江陵',value:95}],
+				 [{name:'江陵'}, {name:'京',value:95}],
+				 [{name:'京'}, {name:'杞县',value:95}],
+				 [{name:'杞县'}, {name:'霸州文安县',value:95}],
+				]),},
+			  
+			  ]
+          },
+		   { // 这是'1047	' 对应的 option
+			  series: [
+			   {data: convertData([
+     
+				 [{name:'蜀'}, {name:'成都',value:95}],
+				 [{name:'成都'}, {name:'开封',value:95}],
+				 [{name:'开封'}, {name:'长安',value:95}],
+				 [{name:'长安'}, {name:'庐山',value:95}],
+				 [{name:'庐山'}, {name:'虔州',value:95}],
+				 [{name:'庐山'}, {name:'蜀',value:95}],
+				 [{name:'蜀'}, {name:'成都',value:95}],
+				 [{name:'成都'}, {name:'雅州',value:95}],
+				 [{name:'雅州'}, {name:'成都',value:95}],
+				 [{name:'成都'}, {name:'阆中',value:95}],
+				 [{name:'阆中'}, {name:'长安',value:95}],
+				 [{name:'长安'}, {name:'渑池',value:95}],
+				  [{name:'渑池'}, {name:'开封',value:95}],
+				 [{name:'开封'}, {name:'蜀',value:95}],
+				 [{name:'蜀'}, {name:'江陵',value:95}],
+				 [{name:'江陵'}, {name:'京',value:95}],
+				 [{name:'京'}, {name:'杞县',value:95}],
+				 [{name:'杞县'}, {name:'霸州文安县',value:95}],
+				 [{name:'霸州文安县'}, {name:'京',value:95}],
+				]),},
+			  
+			  ]
+          },
+		  { // 这是'1047	' 对应的 option
+			  series: [
+			   {data: convertData([
+     
+				 [{name:'蜀'}, {name:'成都',value:95}],
+				 [{name:'成都'}, {name:'开封',value:95}],
+				 [{name:'开封'}, {name:'长安',value:95}],
+				 [{name:'长安'}, {name:'庐山',value:95}],
+				 [{name:'庐山'}, {name:'虔州',value:95}],
+				 [{name:'庐山'}, {name:'蜀',value:95}],
+				 [{name:'蜀'}, {name:'成都',value:95}],
+				 [{name:'成都'}, {name:'雅州',value:95}],
+				 [{name:'雅州'}, {name:'成都',value:95}],
+				 [{name:'成都'}, {name:'阆中',value:95}],
+				 [{name:'阆中'}, {name:'长安',value:95}],
+				 [{name:'长安'}, {name:'渑池',value:95}],
+				  [{name:'渑池'}, {name:'开封',value:95}],
+				 [{name:'开封'}, {name:'蜀',value:95}],
+				 [{name:'蜀'}, {name:'江陵',value:95}],
+				 [{name:'江陵'}, {name:'京',value:95}],
+				 [{name:'京'}, {name:'杞县',value:95}],
+				 [{name:'杞县'}, {name:'霸州文安县',value:95}],
+				 [{name:'霸州文安县'}, {name:'京',value:95}],
+				 [{name:'京'}, {name:'京',value:95}],
+				]),},
+			  
+			  ]
+          },
+		  
+		 
+		 ]
+		 
+		
+	});
+	
+	
+    </script>
+</body>
+</html>
